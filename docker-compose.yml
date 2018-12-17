@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7.23
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./opt/data:/var/lib/mysql
+  backend:
+    container_name: product_system
+    build:
+      context: .
+      args:
+        UID: ${UID:-1001}
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    user: deploy
