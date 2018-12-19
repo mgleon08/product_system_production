@@ -1,6 +1,9 @@
 FROM ruby:2.5.1
 
-RUN apt-get update -qq && apt-get install -y vim nodejs
+RUN apt-get update -qq &&\
+    curl -sL https://deb.nodesource.com/setup_11.x | bash - &&\
+    apt-get install -y nodejs cmake &&\
+    apt-get clean
 
 ARG UID
 RUN adduser deploy --uid $UID --disabled-password --gecos ""
