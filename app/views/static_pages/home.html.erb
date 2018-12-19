@@ -1,4 +1,19 @@
-<h1>Product System</h1>
-<p>
-  Test
-</p>
+<h1>Home Page</h1>
+
+<table>
+  <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Item Price</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%@products.each do |product|%>
+      <tr>
+        <td><%=product.name%></td>
+        <td><%=product.price%></td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
