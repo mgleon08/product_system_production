@@ -1,25 +1,33 @@
 version: '3'
 services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - db
   db:
     image: mysql:5.7.23
     command: --default-authentication-plugin=mysql_native_password
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     volumes:
-      - ./opt/data:/var/lib/mysql
-  backend:
-    container_name: product_system
+      - db-data:/var/lib/mysql
+  web:
     build:
       context: .
-      args:
-        UID: ${UID:-1001}
-    volumes:
-      - .:/usr/src/app
+      dockerfile: ./docker/web/Dockerfile
     ports:
-      - "3000:3000"
+      - 80:80
     depends_on:
-      - db
-    user: deploy
+      - app
+volumes:
+  db-data:
+    external: false
